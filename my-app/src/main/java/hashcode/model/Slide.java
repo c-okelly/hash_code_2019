@@ -43,6 +43,12 @@ public class Slide {
 		two.ifPresent(photo -> builder.append(" ").append(photo.getId()));
 		return builder.toString().trim();
 	}
-	
-	
+
+	public Photo getOne() {
+		return one;
+	}
+
+	public Optional<Photo> getTwo() {
+		return two;
+	}
 }

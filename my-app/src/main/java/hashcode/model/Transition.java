@@ -1,7 +1,5 @@
 package hashcode.model;
 
-import hashcode.model.Slide;
-
 import java.util.TreeSet;
 
 public final class Transition {
@@ -16,6 +14,7 @@ public final class Transition {
         TreeSet<String> leftAndRight = new TreeSet<>(left.tags());
         leftAndRight.retainAll(right.tags());
 
-        return Math.min(leftNotRight.size(), Math.min(leftAndRight.size(), rightNotLeft.size()));
+        int min = Math.min(leftNotRight.size(), Math.min(leftAndRight.size(), rightNotLeft.size()));
+        return min;
     }
 }

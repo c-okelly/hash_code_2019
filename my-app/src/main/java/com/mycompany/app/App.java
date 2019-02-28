@@ -1,16 +1,12 @@
 package com.mycompany.app;
 
 import hashcode.io.InputParser;
-import hashcode.model.Orientation;
-import hashcode.model.Photo;
-import hashcode.model.Slide;
-import hashcode.model.SlideShow;
+import hashcode.model.*;
 
 import java.io.IOException;
 import java.security.SecureRandom;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Hello world!
@@ -27,16 +23,41 @@ public class App
 
     public static SlideShow run(String args) throws IOException {
         InputParser inputParser = new InputParser();
-        List<Photo> photos = inputParser.parse(args);
-        List<Slide> slides = new LinkedList<>();
-        Optional<Slide> leftSlide = createSlide(photos);
-        leftSlide.orElseThrow(() -> new IllegalStateException());
+        Map<Integer,Photo> photos = inputParser.parse(args).
+                stream().collect(Collectors.toMap(Photo::getId, o -> o));
 
+
+        List<Slide> slides = new LinkedList<>();
+
+        List<Photo> iteration = new ArrayList<>(photos.values());
+        Optional<Slide> leftSlide = createSlide(iteration);
+        leftSlide.orElseThrow(() -> new IllegalStateException());
         slides.add(leftSlide.get());
-        while(!photos.isEmpty()) {
-            Optional<Slide> rightSlide = createSlide(photos);
-            slides.add(rightSlide.get());
-            leftSlide = rightSlide;
+
+        while(!iteration.isEmpty()) {
+            List<Photo> photos1 = new ArrayList<>(iteration);
+            Optional<Slide> rightSlide = createSlide(photos1);
+            int idealScore = leftSlide.get().tags().size()/3;
+            Optional<Slide> maxSlide = rightSlide;
+            int maxScore = 0;
+            int score = Transition.score(leftSlide.get(), maxSlide.get());
+            while(score < idealScore && !photos1.isEmpty()){
+                rightSlide = createSlide(photos1);
+                score = Transition.score(leftSlide.get(), rightSlide.get());
+                if(maxScore < score){
+                    maxScore = score;
+                    maxSlide = rightSlide;
+                }
+            }
+
+
+            Slide max = maxSlide.get();
+            photos.remove(max.getOne().getId());
+            max.getTwo().ifPresent(photo -> photos.remove(photo.getId()));
+
+            slides.add(maxSlide.get());
+            leftSlide = maxSlide;
+            iteration = new ArrayList<>(photos.values());
         }
 
         return new SlideShow(slides);
