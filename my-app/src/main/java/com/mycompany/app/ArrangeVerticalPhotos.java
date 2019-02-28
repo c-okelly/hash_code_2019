@@ -12,23 +12,26 @@ import hashcode.model.Slide;
 
 public class ArrangeVerticalPhotos {
 	
-	public List<Photo> getVerticalPhotosSlides(List<Photo> photos) {
+	public List<Slide> getVerticalPhotosSlides(List<Photo> photos) {
 		List<Photo> verticalPhotos = getVerticalPhotos(photos);
 		return arrangeVerticalPhotos(verticalPhotos);
 	}
 	
-	private List<Photo> arrangeVerticalPhotos(List<Photo> verticalPhotos) {
+	private List<Slide> arrangeVerticalPhotos(List<Photo> verticalPhotos) {
 		Collections.shuffle(verticalPhotos);
 		List<Slide> verticalPhotosSlides = new ArrayList<>();
 		for(int i = 0; i < verticalPhotos.size(); i+=2) {
-			Slide verticalPhotosSlide = getSlide(verticalPhotos.get(i), verticalPhotos.get(i+1);
+			Slide verticalPhotosSlide = getSlide(verticalPhotos.get(i), verticalPhotos.get(i+1));
 			verticalPhotosSlides.add(verticalPhotosSlide);
 		}
 		return verticalPhotosSlides;
 	}
 
 	private Slide getSlide(Photo photo1, Photo photo2) {
-
+		List<Photo> photosInSlide = new ArrayList<>();
+		photosInSlide.add(photo1);
+		photosInSlide.add(photo2);
+		return new Slide(photosInSlide);
 	}
 
 	public List<Photo> getVerticalPhotos(Collection<Photo> photos) {
@@ -36,7 +39,7 @@ public class ArrangeVerticalPhotos {
 	}
 
 	private Boolean isVerticalPhoto(Photo photo) {
-		return photo.getOrientation().equals(Orientation.VERITCAL);
+		return photo.getOrientation().equals(Orientation.VERTICAL);
 	}
 	
 }
