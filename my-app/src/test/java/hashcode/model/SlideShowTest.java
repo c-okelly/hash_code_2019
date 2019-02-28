@@ -18,8 +18,8 @@ public class SlideShowTest {
 		List<Slide> slides = new ArrayList<>();
 
 		for(int i = 0; i < numberOfSlides; i++) {
-			slides.add(new Slide(newPhotos(2, Orientation.VERTICAL)));
-			slides.add(new Slide(newPhotos(1, Orientation.HORIZONTAL)));
+//			slides.add(new Slide(newPhotos(2, Orientation.VERTICAL)));
+//			slides.add(new Slide(newPhotos(1, Orientation.HORIZONTAL)));
 		}
 		return slides;
 

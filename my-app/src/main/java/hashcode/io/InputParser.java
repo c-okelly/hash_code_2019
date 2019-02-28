@@ -3,9 +3,7 @@ package hashcode.io;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 import hashcode.model.Orientation;
 import hashcode.model.Photo;
@@ -29,8 +27,8 @@ public class InputParser {
 		return new Photo(i, Orientation.getOrientation(split[0]), getTags(split));
 	}
 
-	private Collection<String> getTags(String[] split) {
-		List<String> tags = new ArrayList<>();
+	private SortedSet<String> getTags(String[] split) {
+		SortedSet<String> tags = new TreeSet<>();
 		for(int i = 2; i < split.length; i++) {
 			tags.add(split[i]);
 		}
